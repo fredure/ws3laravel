@@ -11,6 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [
+	'uses' => 'HomeController@index', 
+	'as' => 'home'
+]);
+
+Route::get('message/{id}/edit', [
+	'uses' => 'HomeController@edit',
+	'as' => 'message.edit'
+]);

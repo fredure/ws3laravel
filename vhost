@@ -1,0 +1,12 @@
+<VirtualHost *:80>
+    DocumentRoot "C:/git/ws3laravel/site/public"
+    ServerName ws3laravel.local
+    <Directory "C:/git/ws3laravel/site/public">
+        #Options Indexes FollowSymLinks
+        #Options All
+        #Order allow,deny
+        #Allow from all
+        AllowOverride All
+        Require all granted    
+    </Directory>
+</VirtualHost>
