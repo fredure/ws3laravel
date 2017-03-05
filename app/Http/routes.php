@@ -24,3 +24,11 @@ Route::get('message/{id}/edit', [
 	'uses' => 'HomeController@edit',
 	'as' => 'message.edit'
 ]);
+
+Route::get('faker', function(){
+	$faker = Faker\Factory::create();
+
+	for ($i=0; $i < 10; $i++) { 
+		echo $faker->text(5)."<br>";
+	}
+});
