@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPhoto extends Migration
+class AddRoleUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddPhoto extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('photo')->after('email');
+            $table->integer('role')->after('email');
         });
     }
 
@@ -25,7 +25,7 @@ class AddPhoto extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('photo');
+            $table->dropColumn('role');
         });
     }
 }
