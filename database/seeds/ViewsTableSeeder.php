@@ -15,8 +15,18 @@ class ViewsTableSeeder extends Seeder
         $faker = Faker\Factory::create();
 
         View::create([
-        	'name' => $faker->name,
+        	'name' => 'Архитектурное решение',
         	'description' => $faker->text
+        ]);
+
+        View::create([
+            'name' => 'Кулинария',
+            'description' => $faker->text
+        ]);
+
+        View::create([
+            'name' => 'Резьба по дереву',
+            'description' => $faker->text
         ]);
     }
 }

@@ -4,12 +4,20 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use Validator;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller
 {
+
+    protected $redirectTo = '/';
+    // protected $redirectPath = '/';
+
+    // protected $loginPath = '/auth/login';
+
     /*
     |--------------------------------------------------------------------------
     | Registration & Login Controller
@@ -42,10 +50,54 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'fio' => 'required',
+            'phone' => 'required',
             'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|min:3',
+        ], [
+            'required' => 'Поле :attribute должно быть заполнено',
+            'email' => 'email не email'
         ]);
+    }
+
+    public function postLogin(Request $request)
+    {
+        $this->validate($request, [
+            $this->loginUsername() => 'required|email', 'password' => 'required',
+        ], [
+            'required' => 'Поле :attribute должно быть заполнено',
+            'email' => 'email не email',
+        ]);
+
+        $throttles = $this->isUsingThrottlesLoginsTrait();
+
+        if ($throttles && $this->hasTooManyLoginAttempts($request)) {
+            return $this->sendLockoutResponse($request);
+        }
+
+        $credentials = $this->getCredentials($request);
+
+        if (Auth::attempt($credentials)) {
+
+            // редирект относительно роли 
+            if (Auth::user()->role->name == 'driver') {
+                $this->redirectPath = route('home.cabinet');
+            }else{
+                $this->redirectPath = route('home');
+            }
+
+            return $this->handleUserWasAuthenticated($request, $throttles);
+        }
+
+        if ($throttles) {
+            $this->incrementLoginAttempts($request);
+        }
+
+        return redirect($this->loginPath())
+            ->withInput($request->only($this->loginUsername(), 'remember'))
+            ->withErrors([
+                $this->loginUsername() => $this->getFailedLoginMessage(),
+            ]);
     }
 
     /**
@@ -57,9 +109,15 @@ class AuthController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
+            'fio' => $data['fio'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
+            'role_id' => 2,
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    // protected function getFailedLoginMessage(){
+    //     return 'Такого пользователя не существует';
+    // }
 }

@@ -35,10 +35,18 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $hidden = ['password', 'remember_token'];
+    // protected $hidden = ['password', 'remember_token'];
 
 
     public function masterClasses(){
-        return $this->hasMany('MasterClass');
+        return $this->hasMany('App\MasterClass');
+    }
+
+    public function ordereds(){
+        return $this->hasMany('App\Ordered');
+    }
+
+    public function role(){
+        return $this->belongsTo('App\Role');
     }
 }

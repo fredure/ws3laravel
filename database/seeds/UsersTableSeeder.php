@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
     		'email' => $faker->email,
     		'role_id' => $faker->numberBetween(1, 2),
     		'photo' => $faker->imageUrl(),
-    		'password' => $faker->password
+    		'password' => bcrypt('lolkek')
     	]);
     }
 }

@@ -11,8 +11,27 @@
 			<p>
 				Для поддержки мастеров и народных умельцев, развития народных художественных промыслов Тюменской области разработаны программы разнообразных мастер-классов, образовательные и методические материалы, реализовано множество ярких и содержательных проектов, среди которых конкурс мастеров и народных умельцев «Мастер – «Золотые руки», региональный конкурс-выставка «Шоколадные фантазии» и др.
 			</p>
+		
+			@if(Auth::check() && Auth::user()->role->name == 'user')
+				<h2>Список мастер классов, на которые вы записаны</h2>
+				<div>
+					@foreach ($ordereds as $ordered)
+						<div>
+							{{ $ordered->masterClass->name }}
+							<form action="{{ route('home.cancel') }}" method="POST">
+								{!! csrf_field() !!}
+								<input type="hidden" name="id" value="{{ $ordered->id }}">
+								<button class="btn">отказаться</button>
+							</form>
+						</div>
+						<br>
+					@endforeach
+				</div>
+			@endif
 			
 		</div>
+
+		@include('partials.menu', ['views'=> $views])
 
 	</div>
 
